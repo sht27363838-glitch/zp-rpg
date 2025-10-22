@@ -99,8 +99,9 @@ journal_entries: [
   // [신규] 활동 로그(우측 피드)
   // id, type, message, xp_delta, coin_delta, hp_delta, at(ISO)
   activity_log: [
-    // { id:'log-1', type:'system', message:'RPG HUD ready', xp_delta:0, coin_delta:0, hp_delta:0, at: nowISO() }
-  ]
+  { id:'log-seed-1', type:'system', message:'RPG HUD ready (seed)', xp_delta:0, coin_delta:0, hp_delta:0, at: nowISO() }
+],
+
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
