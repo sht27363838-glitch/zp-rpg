@@ -1,4 +1,4 @@
-/** api/_db.js */
+// api/_db.js
 const today = () => new Date().toISOString().slice(0, 10);
 
 const db = {
@@ -17,11 +17,11 @@ const db = {
   ],
   journal: [],
   kpi_bridge: [
-    { metric:'AOV',     value:45.0, snapshot_date: today() },
+    { metric:'AOV',     value:45.0,  snapshot_date: today() },
     { metric:'CR',      value:0.022, snapshot_date: today() },
-    { metric:'ROAS',    value:2.3,  snapshot_date: today() },
-    { metric:'CAC',     value:12.0, snapshot_date: today() },
-    { metric:'LTV_90d', value:72.0, snapshot_date: today() }
+    { metric:'ROAS',    value:2.3,   snapshot_date: today() },
+    { metric:'CAC',     value:12.0,  snapshot_date: today() },
+    { metric:'LTV_90d', value:72.0,  snapshot_date: today() }
   ],
   rewards: [
     { id:'r1', name:'Premium coffee', coins_cost:50,  cooldown:'1 day'  },
@@ -38,4 +38,5 @@ function computeXP(q){ return Math.round(xpBase(q)*xpMod(q)*kpiMod(q)); }
 function computeCoins(xp){ return Math.round(xp*0.2); }
 
 module.exports = { db, xpBase, xpMod, kpiMod, computeXP, computeCoins };
+
 
