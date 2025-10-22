@@ -1,30 +1,46 @@
-import React from 'react'
+// src/components/QuestList.jsx
+import React from "react";
+import axios from "axios";
 
-const list = Array.isArray(quests) ? quests : [];
-if (!list.length) return <div style={{padding:12, color:"var(--muted)"}}>No quests for today.</div>;
+export default function QuestList({ quests = [], onCompleted }) {
+  const list = Array.isArray(quests) ? quests : [];
 
+  const complete = async (id) => {
+    try {
+      await axios.post(`/api/quests/${id}/complete`);
+      onCompleted?.(); // 상위에서 HUD/목록 리로드
+    } catch (e) {
+      alert(e?.response?.data?.error || e.message);
+    }
+  };
 
-export default function QuestList({ quests, onComplete }){
+  if (!list.length) {
+    return (
+      <div style={{ padding: 12, color: "var(--muted)" }}>
+        No quests for today.
+      </div>
+    );
+  }
+
   return (
-    <div style={{background:'#0b1220', color:'#fff', padding:16, borderRadius:12}}>
-      <div style={{fontSize:18, fontWeight:700, marginBottom:8}}>Today Operations</div>
-      <div style={{display:'grid', gap:8}}>
-        {quests.map(q=>(
-          <div key={q.id} style={{background:'#111827', padding:12, borderRadius:10, display:'flex', justifyContent:'space-between', alignItems:'center'}}>
-            <div>
-              <div style={{fontWeight:600}}>{q.name}</div>
-              <div style={{opacity:.7, fontSize:12}}>impact {q.impact} • diff {q.difficulty} • type {q.type}</div>
-            </div>
-            <div>
-              {q.status !== 'done' ? (
-                <button onClick={()=>onComplete(q.id)} style={{background:'#22c55e', color:'#000', padding:'6px 10px', borderRadius:8, border:0, cursor:'pointer'}}>Complete</button>
-              ) : (
-                <span style={{opacity:.7}}>Done</span>
-              )}
+    <div className="list">
+      {list.map((q) => (
+        <div className="row" key={q.id}>
+          <div>{q.due?.slice?.(0, 10) || ""}</div>
+          <div>
+            <b>{q.name}</b>
+            <div style={{ fontSize: 12, color: "var(--muted)" }}>
+              impact {q.impact} · diff {q.difficulty} · type {q.type}
             </div>
           </div>
-        ))}
-      </div>
+          <div style={{ textAlign: "right" }}>
+            <button className="btn" onClick={() => complete(q.id)}>
+              Complete
+            </button>
+          </div>
+        </div>
+      ))}
     </div>
-  )
+  );
 }
+
