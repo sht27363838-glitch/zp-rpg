@@ -1,4 +1,4 @@
-/** api/health.js */
+// api/health.js
 module.exports = async (req, res) => {
   try {
     res.setHeader('content-type', 'application/json; charset=utf-8');
