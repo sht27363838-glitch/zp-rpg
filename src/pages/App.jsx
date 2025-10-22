@@ -1,39 +1,51 @@
-import React, { useEffect, useState } from 'react'
-import axios from 'axios'
-import HudCard from '../components/HudCard'
-import QuestList from '../components/QuestList'
-
-// 같은 도메인의 서버리스 API 사용
-const API = '' 
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import Home from "./Home";
+import HudCard from "../components/HudCard";
+import QuestList from "../components/QuestList";
 
 export default function App(){
-  const [hud, setHud] = useState(null)
-  const [quests, setQuests] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [hud, setHud] = useState(null);
+  const [quests, setQuests] = useState([]);
+  const [tab, setTab] = useState("home");
+  const [loading, setLoading] = useState(true);
 
   async function load(){
-    const [hudRes, qRes] = await Promise.all([
-      axios.get(`/api/player/player-1/hud`),
-      axios.get(`/api/quests`)
-    ])
-    setHud(hudRes.data)
-    setQuests(qRes.data)
-    setLoading(false)
+    try {
+      const [hudRes, qRes] = await Promise.all([
+        axios.get(`/api/player/player-1/hud`),
+        axios.get(`/api/quests`)
+      ]);
+      setHud(hudRes.data);
+      setQuests(qRes.data);
+    } catch (e) {
+      alert('API 실패: ' + (e.response?.status || e.message));
+    } finally {
+      setLoading(false);
+    }
   }
 
-  async function complete(id){
-    await axios.post(`/api/quests/${id}/complete`)
-    await load()
-  }
-
-  useEffect(()=>{ load() }, [])
-
-  if(loading) return <div style={{padding:20}}>Loading…</div>
+  useEffect(()=>{ load(); }, []);
 
   return (
-    <div style={{display:'grid', gap:16, padding:16}}>
-      <HudCard player={hud.player} kpi={hud.kpi} />
-      <QuestList quests={quests} onComplete={complete} />
+    <div>
+      <div className="topbar">
+        <div className={`tab ${tab==='home'?'on':''}`} onClick={()=>setTab('home')}>🏠 Home</div>
+        <div className={`tab ${tab==='today'?'on':''}`} onClick={()=>setTab('today')}>🗓 Today</div>
+      </div>
+
+      {loading && <div className="loading">Loading…</div>}
+
+      {!loading && tab==='home' && <Home hud={hud} />}
+      {!loading && tab==='today' &&
+        <div className="page">
+          <HudCard hud={hud}/>
+          <div className="panel">
+            <div className="panel-title">Today Operations</div>
+            <QuestList quests={quests} onCompleted={load}/>
+          </div>
+        </div>}
     </div>
-  )
+  );
 }
+
