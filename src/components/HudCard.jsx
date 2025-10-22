@@ -3,6 +3,10 @@ import React from 'react'
 export default function HudCard({ player, kpi }){
   const lvl = player.level
   const pct = Math.min(100, Math.round(((player.total_xp % 1000) / 1000) * 100))
+  const safe = (v, d) => (v===0 || !!v) ? v : d;
+const p = hud?.player ? hud.player : { name:"Player One", level:1, total_xp:0, xp_to_next:1000, coins:0, coins_net:0 };
+const level = safe(p.level, 1);
+
 
   return (
     <div style={{background:'#0f172a', color:'#fff', padding:16, borderRadius:12}}>
