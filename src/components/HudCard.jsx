@@ -1,43 +1,41 @@
-import React from 'react'
+// src/components/HudCard.jsx
+import React from "react";
 
-export default function HudCard({ player, kpi }){
-  const lvl = player.level
-  const pct = Math.min(100, Math.round(((player.total_xp % 1000) / 1000) * 100))
-  const safe = (v, d) => (v===0 || !!v) ? v : d;
-const p = hud?.player ? hud.player : { name:"Player One", level:1, total_xp:0, xp_to_next:1000, coins:0, coins_net:0 };
-const level = safe(p.level, 1);
+export default function HudCard({ hud }) {
+  // 안전 기본값
+  const p = hud?.player ?? {
+    id: "player-1",
+    name: "Player One",
+    total_xp: 0,
+    coins: 0,
+    coins_spent: 0,
+  };
 
+  // level, xp_to_next 계산도 안전하게
+  const totalXP = Number(p.total_xp || 0);
+  const level = Number.isFinite(p.level) ? p.level : Math.floor(totalXP / 1000) + 1;
+  const xpToNext = Number.isFinite(p.xp_to_next) ? p.xp_to_next : (level * 1000 - totalXP);
+  const coinsNet = (p.coins || 0) - (p.coins_spent || 0);
+  const barPct = Math.max(0, Math.min(100, ((totalXP % 1000) / 1000) * 100));
+
+  // KPI 기본값 (없어도 렌더되게)
+  const kpi = hud?.kpi ?? { AOV: 0, CR: 0, ROAS: 0, CAC: 0, LTV_90d: 0 };
 
   return (
-    <div style={{background:'#0f172a', color:'#fff', padding:16, borderRadius:12}}>
-      <div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
-        <div>
-          <div style={{opacity:.7, fontSize:12}}>LEVEL {lvl}</div>
-          <div style={{fontSize:24, fontWeight:700}}>{player.name}</div>
-        </div>
-        <div style={{textAlign:'right'}}>
-          <div style={{fontSize:12}}>Coins</div>
-          <div style={{fontSize:18, fontWeight:600}}>
-            {player.coins} (net {player.coins - player.coins_spent})
-          </div>
-        </div>
-      </div>
+    <div className="card profile">
+      <div className="avatar">🧑‍🚀</div>
+      <div className="title">{p.name || "Player One"}</div>
+      <div className="hp">LEVEL {level} · Coins {p.coins || 0} (net {coinsNet})</div>
+      <div className="progress"><div style={{ width: `${barPct}%` }} /></div>
 
-      <div style={{marginTop:12}}>
-        <div style={{background:'#334155', height:8, borderRadius:6}}>
-          <div style={{height:8, width:`${pct}%`, background:'#22c55e', borderRadius:6}}/>
-        </div>
-        <div style={{fontSize:12, opacity:.7, marginTop:4}}>{pct}% to next</div>
-      </div>
-
-      <div style={{display:'grid', gridTemplateColumns:'repeat(5,1fr)', gap:8, marginTop:12}}>
-        {kpi.map(item=>(
-          <div key={item.metric} style={{background:'#111827', padding:8, borderRadius:8, textAlign:'center'}}>
-            <div style={{fontSize:12, opacity:.7}}>{item.metric}</div>
-            <div style={{fontSize:14, fontWeight:700}}>{item.value}</div>
-          </div>
-        ))}
+      <div className="stats-strip" style={{ marginTop: 8 }}>
+        <div className="stat"><div className="label">AOV</div><div className="value">{kpi.AOV ?? 0}</div></div>
+        <div className="stat"><div className="label">CR</div><div className="value">{kpi.CR ?? 0}</div></div>
+        <div className="stat"><div className="label">ROAS</div><div className="value">{kpi.ROAS ?? 0}</div></div>
+        <div className="stat"><div className="label">CAC</div><div className="value">{kpi.CAC ?? 0}</div></div>
+        <div className="stat"><div className="label">LTV_90d</div><div className="value">{kpi.LTV_90d ?? 0}</div></div>
       </div>
     </div>
-  )
+  );
 }
+
