@@ -1,5 +1,9 @@
 import React from 'react'
 
+const list = Array.isArray(quests) ? quests : [];
+if (!list.length) return <div style={{padding:12, color:"var(--muted)"}}>No quests for today.</div>;
+
+
 export default function QuestList({ quests, onComplete }){
   return (
     <div style={{background:'#0b1220', color:'#fff', padding:16, borderRadius:12}}>
