@@ -1,9 +1,10 @@
+// src/pages/Home.jsx
 import React from "react";
 import ProfileCard from "../components/ProfileCard";
 import Tile from "../components/Tile";
 import SkillMeters from "../components/SkillMeters";
 import StatsStrip from "../components/StatsStrip";
-import Radar from "../components/Radar";
+import Radar from "../components/Radar"; // 레이더 추가
 
 export default function Home({ hud }) {
   const tiles = [
@@ -21,26 +22,34 @@ export default function Home({ hud }) {
   return (
     <div className="container">
       <div className="grid">
+        {/* 왼쪽 컬럼 */}
         <div className="left">
-          <ProfileCard player={hud?.player}/>
+          <ProfileCard player={hud?.player} />
+
           <div className="section">
             <div className="section-title">Skill Points</div>
-            <SkillMeters player={hud?.player}/>
+            <SkillMeters player={hud?.player} />
+          </div>
+
+          {/* >>> Radar 섹션은 여기(왼쪽 컬럼, return 내부) <<< */}
+          <div className="section">
+            <div className="section-title">Character Identity</div>
+            <Radar />
           </div>
         </div>
 
+        {/* 오른쪽 컬럼 */}
         <div className="right">
           <div className="welcome">WELCOME TO LiFE RPG</div>
-          <StatsStrip kpi={hud?.kpi}/>
+          <StatsStrip kpi={hud?.kpi} />
           <div className="tile-grid">
-            {tiles.map((t)=> <Tile key={t.title} {...t} />)}
+            {tiles.map((t) => (
+              <Tile key={t.title} {...t} />
+            ))}
           </div>
         </div>
       </div>
     </div>
-    <div className="section">
-  <div className="section-title">Character Identity</div>
-  <Radar />
-</div>
   );
 }
+
