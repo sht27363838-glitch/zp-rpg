@@ -1,5 +1,5 @@
 // api/quests/index.js
-const { db } = require('../../_db.js');
+const { db } = require('../_db.js')
 
 module.exports = async (req, res) => {
   try {
