@@ -3,6 +3,7 @@ import ProfileCard from "../components/ProfileCard";
 import Tile from "../components/Tile";
 import SkillMeters from "../components/SkillMeters";
 import StatsStrip from "../components/StatsStrip";
+import Radar from "../components/Radar";
 
 export default function Home({ hud }) {
   const tiles = [
@@ -37,5 +38,9 @@ export default function Home({ hud }) {
         </div>
       </div>
     </div>
+    <div className="section">
+  <div className="section-title">Character Identity</div>
+  <Radar />
+</div>
   );
 }
