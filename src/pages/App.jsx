@@ -5,6 +5,7 @@ import Rewards from "./Rewards";
 import Journal from "./Journal";
 import HudCard from "../components/HudCard";
 import QuestList from "../components/QuestList";
+import ErrorBoundary from "../components/ErrorBoundary";
 
 export default function App(){
   const [hud, setHud] = useState(null);
@@ -32,6 +33,7 @@ export default function App(){
   useEffect(()=>{ load(); }, []);
 
   return (
+     <ErrorBoundary>
     <div>
       <div className="topbar">
         {["home","today","rewards","journal"].map(key=>(
@@ -68,6 +70,7 @@ export default function App(){
       {!loading && !fatal && tab==="rewards" && <Rewards onAfter={load}/>}
       {!loading && !fatal && tab==="journal" && <Journal/>}
     </div>
+       </ErrorBoundary>
   );
 }
 
