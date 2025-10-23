@@ -64,37 +64,32 @@ const db = {
  // _db.js 안의 journal_entries 초기값을 아래로 교체
 journal_entries: [
   {
-    id: 'je-seed-1',
-    date: nowISO(),                 // ISO 타임스탬프
-    moodIds: ['joy', 'anxiety'],    // 기본 제공 mood id들
-    energy: { morning: 2.5, noon: 3, evening: 2 },
-    focus: 3,
-    stress: 2,
-    notes: 'Seed example — edit or delete as you like.',
-    sections: {
-      events:      ['Planned the day', 'Short workout'],
-      learnings:   ['Short, focused blocks work best'],
-      gratitude:   ['A good cup of coffee'],
-      reflections: ['Okay day. Keep momentum.']
-    }
-  },
-  {
-    id: 'je-seed-2',
-    date: nowISO(),
+    id: 'j-seed-1',
+    date: `${today()}T09:00:00.000Z`,
     moodIds: ['joy'],
     energy: { morning: 3, noon: 2.5, evening: 2.5 },
-    focus: 2.5,
-    stress: 1.5,
+    focus: 3, stress: 2,
+    notes: 'Seed example — edit or delete as you like.',
+    sections: { events:['Planned the day'], learnings:[], gratitude:[], reflections:[] },
+    title: 'Planned the day',
+    detail: 'Seed example — edit or delete as you like.',
+    delta: { xp: 5, coins: 0, hp: 0 },
+    links: { quest_id: null, reward_id: null }
+  },
+  {
+    id: 'j-seed-2',
+    date: `${today()}T13:00:00.000Z`,
+    moodIds: ['anxiety'],
+    energy: { morning: 2.5, noon: 2, evening: 2 },
+    focus: 2, stress: 3,
     notes: 'Second sample entry.',
-    sections: {
-      events:      ['Deep work 90min'],
-      learnings:   ['Reduce context switching'],
-      gratitude:   ['Quiet morning'],
-      reflections: ['Felt calm and steady.']
-    }
+    sections: { events:['Deep work 90min'], learnings:['Shortcuts learned'], gratitude:['Coffee'], reflections:[] },
+    title: 'Deep work 90min',
+    detail: 'Second sample entry.',
+    delta: { xp: 5, coins: 0, hp: 0 },
+    links: { quest_id: 'q2', reward_id: null }
   }
 ],
-
 
   // [신규] 활동 로그(우측 피드)
   // id, type, message, xp_delta, coin_delta, hp_delta, at(ISO)
